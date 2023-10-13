@@ -1,5 +1,10 @@
 import java.util.*;
 
+//
+//+ CurrentUser, MultiManager, Person 클래스 추가
+//+ MainMenu 수정
+//
+
 public class Main 
 {
     public static void main(String[] args) {
@@ -17,12 +22,13 @@ public class Main
 
 class MainMenu {
     public static void run() {
-        final int MENU_COUNT = 3; // Menu count를 3으로 변경
+        final int MENU_COUNT = 4;
         
         String menuStr =
-                "***** Main Menu ******\n" +
-                "* 0.exit 1.ch2 2.ch3 *\n" +
-                "**********************\n";
+                "******* Main Menu ********\n" +
+                "* 0.exit 1.PersonManager *\n" +
+                "* 2.ch2 3.ch3            *\n" +
+                "**************************\n";
 
         int menuItem;
         do {
@@ -30,21 +36,63 @@ class MainMenu {
             menuItem = UI.selectMenu(MENU_COUNT); 
 
             switch(menuItem) {
-                case 1:
-                    Ch2.run();
-                    break;
-                case 2:
-                    Ch3.run(); // Ch3 클래스의 run 메소드 호출
-                    break;
-                case 0:
-                    break;
-                default:
-                    break;
+            case 1:
+                new MultiManager().run();
+                break;
+             case 2:
+                Ch2.run();
+                break;
+             case 3:
+                Ch3.run();
+                break;
+             default:
             }
             
         } while(menuItem != 0);
 
         System.out.println("\nGood bye!!");
+    }
+}
+
+class Person 
+{
+    private String  name;    // 이름
+    private int     id;      // Identifier
+    private double  weight;  // 체중
+    private boolean married; // 결혼여부
+    private String  address; // 주소
+
+    // 생성자 함수들
+    public Person(String name, int id, double weight, boolean married, String address) { 
+    }
+     
+    public void println() { 
+        print(); System.out.println(); 
+    }
+     
+    public void println(String msg) { 
+         System.out.print(msg); print(); System.out.println(); 
+    }
+    // assign() 함수
+
+    // Getter: getXXX() 관련 함수들
+     
+    // Setter: overloading: set() 함수 중복
+
+    // Candidates for virtual functions and overriding 
+    // print(), clone(), whatAreYouDoing(), equals(), input() 함수
+    public void print() { 
+        System.out.print(name+" "+id+" "+weight+" "+married+" :"+address+":");
+    }
+    public void input(Scanner s) { 
+        // TODO: 스캐너 s로부터 name, id, weight, married 멤버를 입력 받을 것
+
+        // 아래는 주소 필드를 입력 받는 부분이며 수정없이 그대로 사용하면 된다.
+        // :로 시작하고 :로 끝나는 부분의 서브 문자열을 읽어 냄
+        while ((address = s.findInLine(":.*:")) == null)
+            s.nextLine();
+        address = address.substring(1, address.length()-1); 
+        // 양쪽의 : :를 제거한 서브 문자열을 넘겨 받음
     }
 }
 
@@ -130,6 +178,69 @@ class UI
     }
 }
 
+//===============================================================================
+//CurrentUser class: ch4_1
+//===============================================================================
+
+class CurrentUser
+{
+ Person user;
+
+ CurrentUser(Person user) { 
+     this.user = user; 
+ }
+
+ public void run() {
+     String menuStr =
+         "++++++++++++++++++++++ Current User Menu ++++++++++++++++++++++++\n" +
+         "+ 0.logout 1.display 2.getter 3.setter 4.copy 5.whatAreYouDoing +\n" +
+         "+ 6.equals 7.update                                             +\n" +
+         "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+     final int MENU_COUNT = 8; // 상수 정의
+     while (true) {
+         int menuItem = UI.selectMenu(menuStr, MENU_COUNT);
+         switch(menuItem) {
+         case 1: display();         break;
+         case 2: getter();          break;
+         case 3: setter();          break;
+         case 4: copy();            break;
+         case 5: whatAreYouDoing(); break;
+         case 6: equals();          break;
+         case 7: update();          break;
+         case 0:                    return;
+         }
+     }
+ }
+ void display() { 
+     user.println(); 
+ } // Menu item 1
+
+ void getter() { // Menu item 2
+ }
+ void setter() { // Menu item 3
+ }
+ void copy() { // Menu item 4
+ }
+ void whatAreYouDoing() {  // Menu item 5
+ }
+ void equals() { // Menu item 6
+ }
+ void update() { // Menu item 7
+ }
+} // CurrentUser class: ch4_1
+
+//===============================================================================
+//class MultiManager: ch4_1
+//===============================================================================
+class MultiManager
+{
+ private Person person = new Person("p0", 0, 70.0, false, "Gwangju Nam-gu 21");
+
+ void run() {
+     new CurrentUser(person).run();
+ }
+} // class MultiManager: ch4_1
+
 class Ch3 
 {
     public static void run() {
@@ -145,7 +256,7 @@ class Ch3
             System.out.println();
             System.out.print(menuStr); 
             menuItem = UI.selectMenu(MENU_COUNT); 
-
+            
             switch(menuItem) {
             case 1:
                 array();
@@ -482,4 +593,3 @@ class Ch2
         }
     }
 }    
-
