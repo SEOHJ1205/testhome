@@ -61,24 +61,75 @@ class Person
     private double  weight;  // 체중
     private boolean married; // 결혼여부
     private String  address; // 주소
-
+    
+    public Person(String name) {
+        // this()를 사용하여 다른 생성자 호출
+        this(name, 0, 0.0, false, "");
+    }
     // 생성자 함수들
     public Person(String name, int id, double weight, boolean married, String address) { 
+        set(name, "", id, weight, married, address);
+        System.out.print("Person(): ");  printMembers();  System.out.println();
     }
+
      
     public void println() { 
         print(); System.out.println(); 
     }
-     
+    
+    public void set(String name, int id, double weight, boolean married, String address) {
+        this.name = name;
+        this.id = id;
+        this.weight = weight;
+        this.married = married;
+        this.address = address;
+    }
+
     public void println(String msg) { 
          System.out.print(msg); print(); System.out.println(); 
     }
     // assign() 함수
 
     // Getter: getXXX() 관련 함수들
-     
-    // Setter: overloading: set() 함수 중복
+    public String getName() {
+        return name;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public boolean getMarried() {
+        return married;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    // Setter: overloading: set() 함수 중복
+    public void set(String name) {
+        this.name = name;
+    }
+
+    public void set(int id) {
+        this.id = id;
+    }
+
+    public void set(double weight) {
+        this.weight = weight;
+    }
+
+    public void set(boolean married) {
+        this.married = married;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
     // Candidates for virtual functions and overriding 
     // print(), clone(), whatAreYouDoing(), equals(), input() 함수
     public void print() { 
@@ -198,7 +249,8 @@ class CurrentUser
          "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
      final int MENU_COUNT = 8; // 상수 정의
      while (true) {
-         int menuItem = UI.selectMenu(menuStr, MENU_COUNT);
+    	 System.out.print(menuStr);
+    	 int menuItem = UI.selectMenu(MENU_COUNT);
          switch(menuItem) {
          case 1: display();         break;
          case 2: getter();          break;
@@ -215,8 +267,12 @@ class CurrentUser
      user.println(); 
  } // Menu item 1
 
- void getter() { // Menu item 2
+ void getter() {
+     System.out.println("name:" + user.getName() + ", id:" + user.getId() + ", weight:" +
+             user.getWeight() + ", married:" + user.getMarried() +
+             ", address:" + user.getAddress());
  }
+ 
  void setter() { // Menu item 3
  }
  void copy() { // Menu item 4
